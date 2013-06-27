@@ -9,36 +9,16 @@ if "%3" == "" GOTO ERROR_SEC3
 
 REM ##############################################################
 
-wget -O default.js http://updates.jenkins-ci.org/update-center.json
-sed '1d;$d' default.js>default.json
-mkdir %JENKINS_HOME%\updates
-mv default.json %JENKINS_HOME%\updates
-del default.js
-
-
+call:update_data_center
 java -jar jenkins-cli.jar -s %1 install-plugin git build-name-setter envinject preSCMbuildstep clone-workspace-scm  
 
 REM ##############################################################
 
-call:replaceURL ut-config-template.xml ut-config.xml %2 %3
-call:replaceURL ft-config-template.xml ft-config.xml %2 %3
-call:replaceURL deploy-to-test-config-template.xml deploy-to-test-config.xml %2 %3
-call:replaceURL deploy-to-uat-config-template.xml deploy-to-uat-config.xml %2 %3
-call:replaceURL deploy-to-production-config-template.xml deploy-to-production-config.xml %2 %3
+call :createconfigfiles %2 %3
 
-REM ##############################################################
+call :createviews %1
 
-java -jar jenkins-cli.jar -s %1 create-job UT<ut-config.xml
-java -jar jenkins-cli.jar -s %1 create-job FT<ft-config.xml
-java -jar jenkins-cli.jar -s %1 create-job deploy-to-test<deploy-to-test-config.xml
-java -jar jenkins-cli.jar -s %1 create-job deploy-to-uat<deploy-to-uat-config.xml
-java -jar jenkins-cli.jar -s %1 create-job deploy-to-production<deploy-to-production-config.xml
-
-del ut-config.xml
-del ft-config.xml
-del deploy-to-test-config.xml
-del deploy-to-uat-config.xml
-del deploy-to-production-config.xml
+call :deleteconfigfiles
 
 
 REM ##############################################################
@@ -48,7 +28,6 @@ java -jar jenkins-cli.jar -s %1 groovy add_view.gsh
 java -jar jenkins-cli.jar -s %1 reload-configuration
 
 GOTO END_SEC
-
 
 
 REM ##############################################################
@@ -90,9 +69,51 @@ sed 's/project_git_url_to_be_replaced/%project_url%/g' temp.xml > temp2.xml
 del temp.xml
 mv temp2.xml %~2
 
-echo "***************************************"
+goto :eof
 
+REM ##############################################################
+
+:update_data_center
+
+wget -O default.js http://updates.jenkins-ci.org/update-center.json
+sed '1d;$d' default.js>default.json
+mkdir %JENKINS_HOME%\updates
+mv default.json %JENKINS_HOME%\updates
+del default.js
+
+goto :eof
+
+:createconfigfiles 
+
+call:replaceURL ut-config-template.xml ut-config.xml %~1 %~2
+call:replaceURL ft-config-template.xml ft-config.xml %~1 %~2
+call:replaceURL deploy-to-test-config-template.xml deploy-to-test-config.xml %~1 %~2
+call:replaceURL deploy-to-uat-config-template.xml deploy-to-uat-config.xml %~1 %~2
+call:replaceURL deploy-to-production-config-template.xml deploy-to-production-config.xml %~1 %~2
+
+goto :eof
+
+:createviews
+
+java -jar jenkins-cli.jar -s %~1 create-job UT<ut-config.xml
+java -jar jenkins-cli.jar -s %~1 create-job FT<ft-config.xml
+java -jar jenkins-cli.jar -s %~1 create-job deploy-to-test<deploy-to-test-config.xml
+java -jar jenkins-cli.jar -s %~1 create-job deploy-to-uat<deploy-to-uat-config.xml
+java -jar jenkins-cli.jar -s %~1 create-job deploy-to-production<deploy-to-production-config.xml
+
+goto :eof
+
+:deleteconfigfiles
+
+del ut-config.xml
+del ft-config.xml
+del deploy-to-test-config.xml
+del deploy-to-uat-config.xml
+del deploy-to-production-config.xml
+
+goto :eof
 
 :END_SEC
 
 endlocal
+
