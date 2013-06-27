@@ -9,7 +9,7 @@
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
   </properties>
   <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM" plugin="clone-workspace-scm@0.5">
-    <parentJobName>ut</parentJobName>
+    <parentJobName>UT</parentJobName>
     <criteria>Successful</criteria>
   </scm>
   <canRoam>true</canRoam>
