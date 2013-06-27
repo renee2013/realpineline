@@ -13,6 +13,7 @@ wget -O default.js http://updates.jenkins-ci.org/update-center.json
 sed '1d;$d' default.js>default.json
 mkdir %JENKINS_HOME%\updates
 mv default.json %JENKINS_HOME%\updates
+del default.js
 
 
 java -jar jenkins-cli.jar -s %1 install-plugin git build-name-setter envinject preSCMbuildstep clone-workspace-scm  
@@ -32,6 +33,15 @@ java -jar jenkins-cli.jar -s %1 create-job FT<ft-config.xml
 java -jar jenkins-cli.jar -s %1 create-job deploy-to-test<deploy-to-test-config.xml
 java -jar jenkins-cli.jar -s %1 create-job deploy-to-uat<deploy-to-uat-config.xml
 java -jar jenkins-cli.jar -s %1 create-job deploy-to-production<deploy-to-production-config.xml
+
+del ut-config.xml
+del ft-config.xml
+del deploy-to-test-config.xml
+del deploy-to-uat-config.xml
+del deploy-to-production-config.xml
+
+
+REM ##############################################################
 
 java -jar jenkins-cli.jar -s %1 groovy add_view.gsh
 
