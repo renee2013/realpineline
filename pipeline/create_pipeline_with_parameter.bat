@@ -10,7 +10,8 @@ if "%3" == "" GOTO ERROR_SEC3
 REM ##############################################################
 
 call:update_data_center
-java -jar jenkins-cli.jar -s %1 install-plugin git build-name-setter envinject preSCMbuildstep clone-workspace-scm  
+java -jar jenkins-cli.jar -s %1 install-plugin -deploy git build-name-setter envinject preSCMbuildstep clone-workspace-scm 
+
 
 REM ##############################################################
 
@@ -58,13 +59,13 @@ set TEMP_DIR=%~3
 set project_dir=%TEMP_DIR:/=\/%
 echo %project_dir%
 
-sed 's/project_dir_to_be_replaced/%project_dir%/g' %~1 > temp.xml
+sed 's/project_dir_to_be_replaced/%project_dir%/g' %~1>temp.xml
 
 set TEMP_URL=%~4
 set project_url=%TEMP_URL:/=\/%
 echo %project_url%
 
-sed 's/project_git_url_to_be_replaced/%project_url%/g' temp.xml > temp2.xml
+sed 's/project_git_url_to_be_replaced/%project_url%/g' temp.xml>temp2.xml
 
 del temp.xml
 mv temp2.xml %~2
@@ -112,6 +113,7 @@ del deploy-to-uat-config.xml
 del deploy-to-production-config.xml
 
 goto :eof
+
 
 :END_SEC
 

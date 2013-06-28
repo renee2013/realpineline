@@ -1,0 +1,17 @@
+jenkins installed and running.
+JENKINS_HOME defined 
+
+git installed and configured with user name and user email.
+bin dir is put in the PATH
+
+mvn installed
+bin dir is put in the PATH
+
+cygwin installed.
+wget installed.
+
+update_version.txt in the root dir of project
+
+first 2 build will fail
+1. git not installed yet: restart\time
+2. version.text not created yet.
