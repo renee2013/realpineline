@@ -24,22 +24,7 @@
       <command>echo fake deploy to uat</command>
     </hudson.tasks.Shell>
   </builders>
-  <publishers>
-    <hudson.plugins.cloneworkspace.CloneWorkspacePublisher plugin="clone-workspace-scm@0.5">
-      <workspaceGlob>**/*</workspaceGlob>
-      <criteria>Successful</criteria>
-      <archiveMethod>TAR</archiveMethod>
-      <overrideDefaultExcludes>false</overrideDefaultExcludes>
-    </hudson.plugins.cloneworkspace.CloneWorkspacePublisher>
-    <hudson.tasks.BuildTrigger>
-      <childProjects>deploy-to-production</childProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-      </threshold>
-    </hudson.tasks.BuildTrigger>
-  </publishers>
+  <publishers/>
   <buildWrappers>
     <EnvInjectBuildWrapper plugin="envinject@1.87">
       <info>

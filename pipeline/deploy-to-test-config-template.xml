@@ -9,7 +9,7 @@
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
   </properties>
   <scm class="hudson.plugins.cloneworkspace.CloneWorkspaceSCM" plugin="clone-workspace-scm@0.5">
-    <parentJobName>ft</parentJobName>
+    <parentJobName>FT</parentJobName>
     <criteria>Successful</criteria>
   </scm>
   <canRoam>true</canRoam>
@@ -31,14 +31,6 @@
       <archiveMethod>TAR</archiveMethod>
       <overrideDefaultExcludes>false</overrideDefaultExcludes>
     </hudson.plugins.cloneworkspace.CloneWorkspacePublisher>
-    <hudson.tasks.BuildTrigger>
-      <childProjects>deploy-to-uat</childProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-      </threshold>
-    </hudson.tasks.BuildTrigger>
   </publishers>
   <buildWrappers>
     <EnvInjectBuildWrapper plugin="envinject@1.87">
